@@ -1,0 +1,28 @@
+{
+  "name": "capstoneproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd server && npm i && cd ../client && npm i && npm run build",
+    "start": "node server/server.js"
+  },
+"engines": {
+  "node": "your-node-version"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DrogonToothless/capstoneproject.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DrogonToothless/capstoneproject/issues"
+  },
+  "homepage": "https://github.com/DrogonToothless/capstoneproject#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
