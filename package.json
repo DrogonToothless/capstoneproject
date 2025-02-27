@@ -6,11 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cd server && npm i && cd ../client && npm i && npm run build",
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "lint": "eslint **/*.js --fix"
   },
-"engines": {
-  "node": "your-node-version"
-},
+  "engines": {
+    "node": "your-node-version"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DrogonToothless/capstoneproject.git"
@@ -24,5 +25,11 @@
   "homepage": "https://github.com/DrogonToothless/capstoneproject#readme",
   "dependencies": {
     "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react": "^7.37.4",
+    "globals": "^16.0.0"
   }
 }
