@@ -11,6 +11,18 @@ app.use(express.static(path.resolve(__dirname, "../client")));
 app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../client/index.html"));
 });
+app.get("/login", (req, res) => {
+  res.json({ message: "Login" });
+});
+app.get("/register", (req, res) => {
+  res.json({ message: "Register" });
+});
+app.get("/profile", (req, res) => {
+  res.json({ message: "Profile" });
+});
+app.get("/admin", (req, res) => {
+  res.json({ message: "Admin" });
+});
 app.get("/courses", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM courses");
