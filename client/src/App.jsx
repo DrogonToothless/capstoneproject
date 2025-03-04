@@ -47,10 +47,7 @@ function App() {
           value = "Submit"
         >Sign Up</button>
       </form>
-
-      {/* Loading Icon Test */}
-
-      <img src={loading_icon} className="loading_throbber"></img> 
+      {/*<img src={loading_icon} className="loading_throbber"></img> */}
       {/* Yes, that's the actual term for the loading icon. Look it up */}
     </>
   );
