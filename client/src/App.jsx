@@ -14,6 +14,8 @@ function App() {
     <>
       <h1>Log In</h1>
 
+      {/*I don't know if forms are the best way to do this but we'll figure out out*/}
+      
       <form>
         <div>
         <label for="username">Enter Username</label>
