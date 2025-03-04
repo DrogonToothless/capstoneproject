@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0);
-  const [data, setData] = useState(null);
+// images, it's okay to import images like this manually because this is a small project
+import loading_icon from './assets/load.png';
 
+function App() {
   useEffect(() => {
     fetch("/api")
       .then((res) => res.json())
@@ -15,27 +13,42 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <h1>{!data ? "Loading..." : data}</h1>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>Log In</h1>
+
+      {/*I don't know if forms are the best way to do this but we'll figure it out*/}
+
+      <form>
+        <div>
+        <label for="username">Enter Username</label>
+        <hr></hr>
+        <input 
+        name="username"
+        id="username"
+        type="text"
+        placeholder="Username here..."></input>
+        </div>
+
+        <div>
+        <label for="password">Enter Password</label>
+        <hr></hr>
+        <input 
+        name="password"
+        id="password"
+        type="text"
+        placeholder="Password here..."></input>
+        </div>
+
+        <button
+          type = "login"
+          value = "Submit"
+        >Log In</button>
+         <button
+          type = "register"
+          value = "Submit"
+        >Sign Up</button>
+      </form>
+      {/*<img src={loading_icon} className="loading_throbber"></img> */}
+      {/* Yes, that's the actual term for the loading icon. Look it up */}
     </>
   );
 }
