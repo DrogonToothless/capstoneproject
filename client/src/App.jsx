@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
+// images
+import loading_icon from './assets/load.png';
+
 function App() {
   useEffect(() => {
     fetch("/api")
@@ -44,6 +47,11 @@ function App() {
           value = "Submit"
         >Sign Up</button>
       </form>
+
+      {/* Loading Icon Test */}
+
+      <img src={loading_icon} className="loading_throbber"></img> 
+      {/* Yes, that's the actual term for the loading icon. Look it up */}
     </>
   );
 }
