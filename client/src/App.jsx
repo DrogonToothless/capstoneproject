@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
-// images
+// images, it's okay to import images like this manually because this is a small project
 import loading_icon from './assets/load.png';
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
     <>
       <h1>Log In</h1>
 
-      {/*I don't know if forms are the best way to do this but we'll figure out out*/}
+      {/*I don't know if forms are the best way to do this but we'll figure it out*/}
 
       <form>
         <div>
