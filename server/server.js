@@ -25,19 +25,19 @@ app.get("/", (req, res) => {
 app.post("/register", async (req, res) => {
   try {
       const { username, password } = req.body;
-      console.log("Received registration request:", username, password); // Debug
+      console.log("Received registration request:", username, password);
       const userExists = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
-      console.log("User exists check result:", userExists.rows); // Debug
+      console.log("User exists check result:", userExists.rows);
       if (userExists.rows.length > 0) {
           return res.status(400).json({ message: "User already exists" });
       }
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
-      console.log("Hashed password:", hashedPassword); // Debug
+      console.log("Hashed password:", hashedPassword);
       await pool.query("INSERT INTO users (username, password_hash) VALUES ($1, $2)", [username, hashedPassword]);
       res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-      console.error("Registration error:", error); // Full error log
+      console.error("Registration error:", error);
       res.status(500).json({ error: "Internal server error" });
   }
 });
