@@ -1,15 +1,15 @@
 const express = require("express");
 const path = require("path");
-const { Pool } = require("pg");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express();
 const PORT = process.env.PORT || 3001;
+const { Pool } = require("pg");
 const pool = new Pool({ connectionString: process.env.DB_URI });
+app.use(express.static(path.resolve(__dirname, "../client/dist")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.resolve(__dirname, "../client")));
 function authenticateToken(req, res, next) {
   const token = req.headers["authorization"];
   if (!token) return res.status(401).json({ message: "Access denied" });
@@ -20,7 +20,7 @@ function authenticateToken(req, res, next) {
   });
 }
 app.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../client/index.html"));
+  res.sendFile(path.resolve(__dirname, "index.html"));
 });
 app.post("/register", async (req, res) => {
   try {
