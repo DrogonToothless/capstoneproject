@@ -4,7 +4,7 @@ import "./App.css";
 // images, it's okay to import images like this manually because this is a small project
 import loading_icon from './assets/load.png';
 
-function App() {
+function RegistrationPage() {
   useEffect(() => {
     fetch("/api")
       .then((res) => res.json())
@@ -13,7 +13,7 @@ function App() {
 
   return (
     <>
-      <h1>Log In</h1>
+      <h1>Register</h1>
 
       {/*I don't know if forms are the best way to do this but we'll figure it out*/}
 
@@ -39,15 +39,15 @@ function App() {
         </div>
 
         <button
-          type = "login"
+          type = "register"
           value = "Submit"
-        >Log In</button>
+        >Register</button>
       </form>
-      <a href="/register" className="register_swap">Or register here...</a>
+      <a href="/" className="register_swap">Or log in here...</a>
       {/*<img src={loading_icon} className="loading_throbber"></img> */}
       {/* Yes, that's the actual term for the loading icon. Look it up */}
     </>
   );
 }
 
-export default App;
+export default RegistrationPage;
