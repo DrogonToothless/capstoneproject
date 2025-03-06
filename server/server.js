@@ -22,13 +22,10 @@ function authenticateToken(req, res, next) {
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../client/dist/index.html"));
 });
-app.get("/register", (req, res) => {
-  console.log("Register page requested");
-});
 app.post("/register", async (req, res) => {
   try {
-      const { username, password } = req.body;
-      console.log("Received registration request:", username, password);
+      const { username, password, firstname, lastname, email } = req.body;
+      console.log("Received registration request:", username, password, firstname, lastname, email);
       const userExists = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
       console.log("User exists check result:", userExists.rows);
       if (userExists.rows.length > 0) {
@@ -37,7 +34,10 @@ app.post("/register", async (req, res) => {
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       console.log("Hashed password:", hashedPassword);
-      await pool.query("INSERT INTO users (username, password_hash) VALUES ($1, $2)", [username, hashedPassword]);
+      await pool.query(
+          "INSERT INTO users (username, password_hash, first_name, last_name, email) VALUES ($1, $2, $3, $4, $5)", 
+          [username, hashedPassword, firstname, lastname, email]
+      ); 
       res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
       console.error("Registration error:", error);
@@ -56,7 +56,14 @@ app.post("/login", async (req, res) => {
     if (!passwordMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
-    const token = jwt.sign({ userId: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign(
+      { 
+        username: user.username,
+        password: user.password_hash
+      }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: "1h" }
+    );
     res.json({ message: "Login successful", token });
   } catch (error) {
     console.error("Login error:", error);
