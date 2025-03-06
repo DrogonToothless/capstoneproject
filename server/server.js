@@ -19,8 +19,11 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
-app.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "index.html"));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client/dist/index.html"));
+});
+app.get("/register", (req, res) => {
+  console.log("Register page requested");
 });
 app.post("/register", async (req, res) => {
   try {
@@ -60,9 +63,6 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-app.get("/login", (req, res) => res.json({ message: "Login" }));
-app.get("/register", (req, res) => res.json({ message: "Register" }));
-app.get("/api", (req, res) => res.json({ message: "Hello from server!" }));
 app.get("/profile", authenticateToken, (req, res) => {
   res.json({ message: `Welcome to your profile, ${req.user.username}` });
 });
