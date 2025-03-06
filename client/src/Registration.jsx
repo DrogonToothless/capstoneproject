@@ -17,31 +17,33 @@ function RegistrationPage() {
 
       {/*I don't know if forms are the best way to do this but we'll figure it out*/}
 
-      <form>
+      <form method="POST" action="/register">
         <div>
-        <label for="username">Enter Username</label>
-        <hr></hr>
-        <input 
-        name="username"
-        id="username"
-        type="text"
-        placeholder="Username here..."></input>
+          <label for="firstname">First Name</label>
+          <hr></hr>
+          <input name="firstname" id="firstname" type="text" placeholder="First Name"></input>
         </div>
-
         <div>
-        <label for="password">Enter Password</label>
-        <hr></hr>
-        <input 
-        name="password"
-        id="password"
-        type="text"
-        placeholder="Password here..."></input>
+          <label for="lastname">Last Name</label>
+          <hr></hr>
+          <input name="lastname" id="lastname" type="text" placeholder="Last Name"></input>
         </div>
-
-        <button
-          type = "register"
-          value = "Submit"
-        >Register</button>
+        <div>
+          <label for="email">Email</label>
+          <hr></hr>
+          <input name="email" id="email" type="text" placeholder="email"></input>
+        </div>
+        <div>
+          <label for="username">Enter Username</label>
+          <hr></hr>
+          <input name="username" id="username" type="text" placeholder="Username here..."></input>
+        </div>
+        <div>
+          <label for="password">Enter Password</label>
+          <hr></hr>
+          <input name="password" id="password" type="password" placeholder="Password here..."></input>
+        </div>
+        <button type="register" value="Submit">Register</button>
       </form>
       <a href="/" className="register_swap">Or log in here...</a>
       {/*<img src={loading_icon} className="loading_throbber"></img> */}
