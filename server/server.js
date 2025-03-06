@@ -19,25 +19,28 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
-app.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "index.html"));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client/dist/index.html"));
 });
 app.post("/register", async (req, res) => {
   try {
-      const { username, password } = req.body;
-      console.log("Received registration request:", username, password); // Debug
+      const { username, password, firstname, lastname, email } = req.body;
+      console.log("Received registration request:", username, password, firstname, lastname, email);
       const userExists = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
-      console.log("User exists check result:", userExists.rows); // Debug
+      console.log("User exists check result:", userExists.rows);
       if (userExists.rows.length > 0) {
           return res.status(400).json({ message: "User already exists" });
       }
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
-      console.log("Hashed password:", hashedPassword); // Debug
-      await pool.query("INSERT INTO users (username, password_hash) VALUES ($1, $2)", [username, hashedPassword]);
+      console.log("Hashed password:", hashedPassword);
+      await pool.query(
+          "INSERT INTO users (username, password_hash, first_name, last_name, email) VALUES ($1, $2, $3, $4, $5)", 
+          [username, hashedPassword, firstname, lastname, email]
+      ); 
       res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-      console.error("Registration error:", error); // Full error log
+      console.error("Registration error:", error);
       res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -53,16 +56,20 @@ app.post("/login", async (req, res) => {
     if (!passwordMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
-    const token = jwt.sign({ userId: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign(
+      { 
+        username: user.username,
+        password: user.password_hash
+      }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: "1h" }
+    );
     res.json({ message: "Login successful", token });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
-app.get("/login", (req, res) => res.json({ message: "Login" }));
-app.get("/register", (req, res) => res.json({ message: "Register" }));
-app.get("/api", (req, res) => res.json({ message: "Hello from server!" }));
 app.get("/profile", authenticateToken, (req, res) => {
   res.json({ message: `Welcome to your profile, ${req.user.username}` });
 });
