@@ -6,6 +6,7 @@ import "./Misc.css";
 import loading_icon from './assets/load.png';
 
 import template_pfp from "./assets/profile_placeholder.png";
+import edit_details from "./assets/profile_editdetails.png";
 
 function UserProfilePage() {
   const [display, setDisplay] = useState("Welcome to your profile, JohnDoe")
@@ -21,6 +22,8 @@ function UserProfilePage() {
       <div className="profile_welcome">
         <img src={template_pfp} className="profile_pic"></img>
         <h1>{display}</h1>
+
+        <a href="/editprofdetails" className="edit_details"><img src={edit_details}></img></a>
       </div>
       {/* At some point, maybe add profile picture support? Not super necessary though */}
       
