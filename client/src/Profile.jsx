@@ -1,53 +1,36 @@
 import { useState, useEffect } from "react";
-import "./App.css";
+import "./Profile.css";
+import "./Misc.css";
 
 // images, it's okay to import images like this manually because this is a small project
 import loading_icon from './assets/load.png';
 
-function RegistrationPage() {
+import template_pfp from "./assets/profile_placeholder.png";
+import edit_details from "./assets/profile_editdetails.png";
+
+function UserProfilePage() {
+  const [display, setDisplay] = useState("Welcome to your profile, JohnDoe")
+
   useEffect(() => {
-    fetch("/api")
+    fetch("/profile")
       .then((res) => res.json())
-      .then((data) => setData(data.message));
+      .then((data) => setDisplay(data.message));
   }, []);
 
   return (
     <>
-      <h1>Register</h1>
+      <div className="profile_welcome">
+        <img src={template_pfp} className="profile_pic"></img>
+        <h1>{display}</h1>
 
-      {/*I don't know if forms are the best way to do this but we'll figure it out*/}
-
-      <form>
-        <div>
-        <label for="username">Enter Username</label>
-        <hr></hr>
-        <input 
-        name="username"
-        id="username"
-        type="text"
-        placeholder="Username here..."></input>
-        </div>
-
-        <div>
-        <label for="password">Enter Password</label>
-        <hr></hr>
-        <input 
-        name="password"
-        id="password"
-        type="text"
-        placeholder="Password here..."></input>
-        </div>
-
-        <button
-          type = "register"
-          value = "Submit"
-        >Register</button>
-      </form>
-      <a href="/" className="register_swap">Or log in here...</a>
+        <a href="/editprofdetails" className="edit_details"><img src={edit_details}></img></a>
+      </div>
+      {/* At some point, maybe add profile picture support? Not super necessary though */}
+      
       {/*<img src={loading_icon} className="loading_throbber"></img> */}
       {/* Yes, that's the actual term for the loading icon. Look it up */}
     </>
   );
 }
 
-export default RegistrationPage;
+export default UserProfilePage;
