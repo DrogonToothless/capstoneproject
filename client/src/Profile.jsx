@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
-import "./App.css";
+import "./Profile.css";
+import "./Misc.css";
 
 // images, it's okay to import images like this manually because this is a small project
 import loading_icon from './assets/load.png';
+
+import template_pfp from "./assets/profile_placeholder.png";
 
 function UserProfilePage() {
   const [display, setDisplay] = useState("Welcome to your profile, JohnDoe")
@@ -15,7 +18,10 @@ function UserProfilePage() {
 
   return (
     <>
-      <h1>{display}</h1>
+      <div className="profile_welcome">
+        <img src={template_pfp} className="profile_pic"></img>
+        <h1>{display}</h1>
+      </div>
       {/* At some point, maybe add profile picture support? Not super necessary though */}
       
       {/*<img src={loading_icon} className="loading_throbber"></img> */}

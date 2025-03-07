@@ -1,0 +1,19 @@
+#root {
+  padding-top:0px;
+}
+
+.profile_pic {
+  border-radius: 50%;
+  width: 15%;
+  height:15%;
+}
+
+body {
+  display:block;
+  place-items: initial;
+}
+
+h1 {
+  font-size:2.2em;
+}
+
