@@ -18,7 +18,6 @@ function UserProfilePage() {
       <h1>{display}</h1>
       {/* At some point, maybe add profile picture support? Not super necessary though */}
       
-      <a href="/" className="register_swap">Or log in here...</a>
       {/*<img src={loading_icon} className="loading_throbber"></img> */}
       {/* Yes, that's the actual term for the loading icon. Look it up */}
     </>
