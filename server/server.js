@@ -73,10 +73,34 @@ app.post("/login", async (req, res) => {
 app.get("/profile", authenticateToken, (req, res) => {
   res.json({ message: `Welcome to your profile, ${req.user.username}` });
 });
-app.get("/admin", authenticateToken, (req, res) => {
-  res.json({ message: `Admin access granted to ${req.user.username}` });
+app.post("/adminlogin", authenticateToken, async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    const adminExists = await pool.query("SELECT * FROM admins WHERE admin_username = $1", [username]);
+    if (adminExists.rows.length > 0) {
+      return res.status(400).json({ message: "Admin user already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await pool.query(
+      "INSERT INTO admin_users (username, password_hash,) VALUES ($1, $2,)",
+      [username, hashedPassword]
+    );
+
+    res.status(201).json({ message: "Admin created successfully" });
+  } catch (error) {
+    console.error("Admin creation error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+  if (authenticateToken) {
+    res.redirect("/admin");
+  }
 });
-app.get("/courses", async (req, res) => {
+app.post("/admin", async (req, res) => {
+  res.json({ message: "Admin login successful" });
+});
+app.get("/courses", authenticateToken, async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM courses");
     res.json(result.rows);
