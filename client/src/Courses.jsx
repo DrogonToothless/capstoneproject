@@ -6,7 +6,7 @@ import loading_icon from './assets/load.png';
 
 function CoursesList() {
   useEffect(() => {
-    fetch("/api")
+    fetch("/courses")
       .then((res) => res.json())
       .then((data) => setData(data.message));
   }, []);
