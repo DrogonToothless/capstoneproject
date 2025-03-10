@@ -1,6 +1,5 @@
 const express = require("express");
 const path = require("path");
-require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express();
@@ -19,9 +18,9 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../client/dist/index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.resolve(__dirname, "../client/dist/index.html"));
+// });
 app.post("/register", async (req, res) => {
   try {
       const { username, password, firstname, lastname, email } = req.body;

@@ -8,7 +8,8 @@
   },
   "scripts": {
     "build": "cd server && npm i && cd ../client && npm i && npm run build",
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "dev": "node --env-file=server/.env server/server.js"
   },
   "keywords": [],
   "author": "",
