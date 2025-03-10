@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import "./Misc.css";
 
 // images, it's okay to import images like this manually because this is a small project
 import loading_icon from './assets/load.png';
@@ -21,17 +22,17 @@ function RegistrationPage() {
         <div>
           <label for="firstname">First Name</label>
           <hr></hr>
-          <input name="firstname" id="firstname" type="text" placeholder="First Name"></input>
+          <input name="firstname" id="firstname" type="text" placeholder="First Name here..."></input>
         </div>
         <div>
           <label for="lastname">Last Name</label>
           <hr></hr>
-          <input name="lastname" id="lastname" type="text" placeholder="Last Name"></input>
+          <input name="lastname" id="lastname" type="text" placeholder="Last Name here..."></input>
         </div>
         <div>
           <label for="email">Email</label>
           <hr></hr>
-          <input name="email" id="email" type="text" placeholder="email"></input>
+          <input name="email" id="email" type="text" placeholder="Email here..."></input>
         </div>
         <div>
           <label for="username">Enter Username</label>

@@ -35,9 +35,9 @@ app.post("/register", async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       console.log("Hashed password:", hashedPassword);
       await pool.query(
-          "INSERT INTO users (username, password_hash, first_name, last_name, email) VALUES ($1, $2, $3, $4, $5)", 
+          "INSERT INTO users (username, password_hash, first_name, last_name, email) VALUES ($1, $2, $3, $4, $5)",
           [username, hashedPassword, firstname, lastname, email]
-      ); 
+      );
       res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
       console.error("Registration error:", error);
