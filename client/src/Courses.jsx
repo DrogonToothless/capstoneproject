@@ -1,53 +1,38 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import "./Courses.css";
+import "./Misc.css";
 
 // images, it's okay to import images like this manually because this is a small project
 import loading_icon from './assets/load.png';
 
-function RegistrationPage() {
+function CoursesList() {
   useEffect(() => {
-    fetch("/api")
+    fetch("/courses")
       .then((res) => res.json())
       .then((data) => setData(data.message));
   }, []);
 
   return (
     <>
-      <h1>Register</h1>
+      <h1>Courses</h1>
 
-      {/*I don't know if forms are the best way to do this but we'll figure it out*/}
 
-      <form>
-        <div>
-        <label for="username">Enter Username</label>
-        <hr></hr>
-        <input 
-        name="username"
-        id="username"
-        type="text"
-        placeholder="Username here..."></input>
-        </div>
-
-        <div>
-        <label for="password">Enter Password</label>
-        <hr></hr>
-        <input 
-        name="password"
-        id="password"
-        type="text"
-        placeholder="Password here..."></input>
-        </div>
-
-        <button
-          type = "register"
-          value = "Submit"
-        >Register</button>
-      </form>
-      <a href="/" className="register_swap">Or log in here...</a>
-      {/*<img src={loading_icon} className="loading_throbber"></img> */}
-      {/* Yes, that's the actual term for the loading icon. Look it up */}
+      {/*Table will be filled out with javascript*/}
+      <table>
+        <tr>
+          <th>String ID</th>
+          <th>Course Title</th>
+          <th>Description</th>
+          <th>Schedule</th>
+          <th>Classroom Number</th>
+          <th>Maximum Capacity</th>
+          <th>Credit Hours</th>
+          <th>Tuition Cost</th>
+        </tr>
+      </table>
     </>
   );
 }
 
-export default RegistrationPage;
+export default CoursesList;
