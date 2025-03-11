@@ -1,6 +1,5 @@
 const express = require("express");
 const path = require("path");
-require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express();
@@ -19,9 +18,9 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../client/dist/index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.resolve(__dirname, "../client/dist/index.html"));
+// });
 app.post("/register", async (req, res) => {
   try {
       const { username, password, firstname, lastname, email } = req.body;
@@ -35,9 +34,9 @@ app.post("/register", async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       console.log("Hashed password:", hashedPassword);
       await pool.query(
-          "INSERT INTO users (username, password_hash, first_name, last_name, email) VALUES ($1, $2, $3, $4, $5)", 
+          "INSERT INTO users (username, password_hash, first_name, last_name, email) VALUES ($1, $2, $3, $4, $5)",
           [username, hashedPassword, firstname, lastname, email]
-      ); 
+      );
       res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
       console.error("Registration error:", error);
