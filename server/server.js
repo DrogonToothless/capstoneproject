@@ -100,7 +100,7 @@ app.post("/adminlogin", authenticateToken, async (req, res) => {
 app.post("/admin", async (req, res) => {
   res.json({ message: "Admin login successful" });
 });
-app.get("/courses", authenticateToken, async (req, res) => {
+app.post("/courses", authenticateToken, async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM courses");
     res.json(result.rows);
