@@ -13,8 +13,10 @@ function CoursesList() {
   const getCourses = async() => {
     try {
       const res = await fetch("/courses");
+      console.log(res);
       const json = await res.json();
       setData(json);
+      console.log(json);
     } catch(error) {
       console.error(error);
     } finally {
@@ -25,8 +27,6 @@ function CoursesList() {
   useEffect(() => {
      getCourses();
   }, []);
-
-  console.log(data);
 
   return (
     <>
@@ -51,7 +51,7 @@ function CoursesList() {
 
         </tbody>
         <tfoot>
-          
+
         </tfoot>
       </table>
     </>
