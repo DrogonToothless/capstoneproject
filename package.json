@@ -8,19 +8,13 @@
   },
   "scripts": {
     "build": "cd server && npm i && cd ../client && npm i && npm run build",
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "dev": "node --env-file=server/.env server/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.1",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "fs": "^0.0.1-security",
-    "jsonwebtoken": "^9.0.2",
-    "path": "^0.12.7",
-    "pg": "^8.13.3",
-    "react-router": "^7.2.0"
+    
   }
 }
