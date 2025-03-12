@@ -7,11 +7,26 @@ import "./Misc.css";
 import loading_icon from './assets/load.png';
 
 function CoursesList() {
+  const [data, setData] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+
+  const getCourses = async() => {
+    try {
+      const res = await fetch("/courses");
+      const json = await res.json();
+      setData(json);
+    } catch(error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    fetch("/courses")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
+     getCourses();
   }, []);
+
+  console.log(data);
 
   return (
     <>
