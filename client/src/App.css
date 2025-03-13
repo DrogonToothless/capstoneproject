@@ -14,25 +14,6 @@ button {
   margin-right: 10px;
 }
 
-
-@keyframes throbber-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.loading_throbber {
-  position:absolute;
-  right:20px;
-  bottom:20px;
-  animation: throbber-spin infinite 1.5s linear;
-  width: 65px;
-  height: 65px;
-}
-
 .register_swap {
   margin-top: 10px;
   font-size: 0.75em;
