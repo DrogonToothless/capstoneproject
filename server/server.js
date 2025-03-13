@@ -19,6 +19,9 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
+app.get('*', (req, res) => { 
+  res.sendFile(path.join(__dirname, '../client/dist', 'index.html')); 
+});
 app.post("/register", async (req, res) => {
   try {
       const { username, password, firstname, lastname, email } = req.body;
@@ -66,9 +69,6 @@ app.post("/login", async (req, res) => {
     console.error("Login error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
-});
-app.get("/profile", authenticateToken, (req, res) => {
-  res.json({ message: `Welcome to your profile, ${req.user.username}` });
 });
 app.post("/adminlogin", authenticateToken, async (req, res) => {
   try {
