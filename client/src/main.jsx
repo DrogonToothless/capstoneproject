@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>
     <Routes>
       <Route path="/" element={<App />} />
-      <Route path ="/register" element={<RegistrationPage/>} />
+      <Route path="/register" element={<RegistrationPage/>} />
       <Route path="/profile" element={<UserProfilePage/>} />
       <Route path="/admin" element={<AdminPanel/>}/>
       <Route path="/courses" element={<CoursesList/>}/>
