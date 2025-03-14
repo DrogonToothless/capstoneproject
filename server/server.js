@@ -1,11 +1,17 @@
 const express = require("express");
 const path = require("path");
+require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express();
 const PORT = process.env.PORT || 3001;
 const { Pool } = require("pg");
-const pool = new Pool({ connectionString: process.env.DB_URI });
+const pool = new Pool({ 
+  connectionString: process.env.DB_URI,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
 app.use(express.static(path.resolve(__dirname, "../client/dist")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -18,21 +24,18 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
-// app.get("*", (req, res) => {
-//   res.sendFile(path.resolve(__dirname, "../client/dist/index.html"));
-// });
+app.get('*', (req, res) => { 
+  res.sendFile(path.join(__dirname, '../client/dist', 'index.html')); 
+});
 app.post("/register", async (req, res) => {
   try {
-      const { username, password, firstname, lastname, email } = req.body;
-      console.log("Received registration request:", username, password, firstname, lastname, email);
+      const { firstname, lastname, email, username, password } = req.body;
       const userExists = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
-      console.log("User exists check result:", userExists.rows);
       if (userExists.rows.length > 0) {
           return res.status(400).json({ message: "User already exists" });
       }
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(password, saltRounds);
-      console.log("Hashed password:", hashedPassword);
       await pool.query(
           "INSERT INTO users (username, password_hash, first_name, last_name, email) VALUES ($1, $2, $3, $4, $5)",
           [username, hashedPassword, firstname, lastname, email]
@@ -63,14 +66,11 @@ app.post("/login", async (req, res) => {
       process.env.JWT_SECRET, 
       { expiresIn: "1h" }
     );
-    res.json({ message: "Login successful", token });
+    res.redirect("/courses");
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
-});
-app.get("/profile", authenticateToken, (req, res) => {
-  res.json({ message: `Welcome to your profile, ${req.user.username}` });
 });
 app.post("/adminlogin", authenticateToken, async (req, res) => {
   try {
