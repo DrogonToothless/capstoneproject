@@ -32,6 +32,8 @@ function CoursesList() {
     <>
       <h1>Courses</h1>
 
+      {/* load icon */}
+      {isLoading == true && <img src={loading_icon} className="loading_throbber"></img>}
 
       {/*Table will be filled out with javascript*/}
       <table>
