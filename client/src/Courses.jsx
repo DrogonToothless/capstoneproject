@@ -2,38 +2,40 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import "./Courses.css";
 import "./Misc.css";
-
-// images, it's okay to import images like this manually because this is a small project
 import loading_icon from './assets/load.png';
 
 function CoursesList() {
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const getCourses = async() => {
+  const getCourses = async () => {
     try {
-      const res = await fetch("/courses");
-      console.log(res);
+      const res = await fetch("/courses", { method: "POST" });
+
+      if (!res.ok) {
+        throw new Error(`Failed to fetch courses: ${res.statusText}`);
+      }
+
       const json = await res.json();
-      setData(json);
-      console.log(json);
-    } catch(error) {
-      console.error(error);
+      console.log("Fetched data:", json);
+
+      setData(Array.isArray(json) ? json : []);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+      setError(error.message);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-     getCourses();
+    getCourses();
   }, []);
 
   return (
     <>
       <h1>Courses</h1>
-
-
-      {/*Table will be filled out with javascript*/}
       <table>
         <thead>
           <tr>
@@ -48,11 +50,19 @@ function CoursesList() {
           </tr>
         </thead>
         <tbody>
-
+          {data.map((course, index) => (
+            <tr key={index}>
+              <td>{course.string_id}</td>
+              <td>{course.title}</td>
+              <td>{course.description}</td>
+              <td>{course.schedule}</td>
+              <td>{course.classroom_number}</td>
+              <td>{course.maximum_capacity}</td>
+              <td>{course.credit_hours}</td>
+              <td>{course.tuition_cost}</td>
+            </tr>
+          ))}
         </tbody>
-        <tfoot>
-
-        </tfoot>
       </table>
     </>
   );
