@@ -3,7 +3,9 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
-
+import axios from "axios";
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = 'http://localhost:3001';
 import RegistrationPage from './Registration.jsx'
 import UserProfilePage from "./Profile.jsx"
 import AdminPanel from "./Admin.jsx"

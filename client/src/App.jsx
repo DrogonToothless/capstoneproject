@@ -17,7 +17,7 @@ function App() {
       <h1>Log In</h1>
 
       {/*I don't know if forms are the best way to do this but we'll figure it out*/}
-      <form method="POST" action="/login">
+      <form method="POST" action="/">
         <div>
           <label for="username">Enter Username</label>
           <hr></hr>
