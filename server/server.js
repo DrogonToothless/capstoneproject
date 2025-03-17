@@ -22,17 +22,15 @@ app.use(express.static(path.resolve(__dirname, "../client/dist")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const verifyToken = (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1]; // Get token from header
-
+  const token = req.headers['authorization']?.split(' ')[1];
   if (!token) {
     return res.status(403).json({ message: 'Token required' });
   }
-
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
       return res.status(403).json({ message: 'Invalid token' });
     }
-    req.user = user; // Attach user data to request
+    req.user = user;
     next();
   });
 };
@@ -55,7 +53,7 @@ app.post("/register", async (req, res) => {
       res.status(500).json({ error: "Internal server error" });
   }
 });
-app.post("/login", async (req, res) => {
+app.post("/", async (req, res) => {
   try {
     const { username, password } = req.body;
     const userResult = await client.query("SELECT * FROM users WHERE username = $1", [username]);
@@ -79,23 +77,20 @@ app.post("/login", async (req, res) => {
     console.error("Login error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
-  res.redirect("/courses");
+  res.redirect('/courses');
 });
-app.post("/adminlogin", verifyToken, async (req, res) => {
+app.post("/adminlogin", async (req, res) => {
   try {
     const { username, password } = req.body;
-
     const adminExists = await client.query("SELECT * FROM admins WHERE admin_username = $1", [username]);
     if (adminExists.rows.length > 0) {
       return res.status(400).json({ message: "Admin user already exists" });
     }
-
     const hashedPassword = await bcrypt.hash(password, 10);
     await client.query(
       "INSERT INTO admin_users (username, password_hash,) VALUES ($1, $2,)",
       [username, hashedPassword]
     );
-
     res.status(201).json({ message: "Admin created successfully" });
   } catch (error) {
     console.error("Admin creation error:", error);
@@ -105,16 +100,22 @@ app.post("/adminlogin", verifyToken, async (req, res) => {
 app.post("/admin", verifyToken, async (req, res) => {
   res.json({ message: "Admin login successful" });
 });
-app.post('/courses', async (req, res) => {
+app.post('/courses', verifyToken, async (req, res) => {
   try {
     const result = await client.query('SELECT * FROM courses');
-    res.json(result.rows); // Ensure this is returning JSON
+    res.json(result.rows);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching courses', error: error.message });
   }
 });
-
-
+app.post('/profile', verifyToken, async (req, res) => {
+  try {
+    const result = await client.query('SELECT * FROM users WHERE username = $1', [req.user.username]);
+    res.json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching profile', error: error.message });
+  }
+});
 app.get('*', (req, res) => { 
   res.sendFile(path.join(__dirname, '../client/dist', 'index.html')); 
 });

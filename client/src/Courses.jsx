@@ -12,14 +12,11 @@ function CoursesList() {
   const getCourses = async () => {
     try {
       const res = await fetch("/courses", { method: "POST" });
-
       if (!res.ok) {
         throw new Error(`Failed to fetch courses: ${res.statusText}`);
       }
-
       const json = await res.json();
       console.log("Fetched data:", json);
-
       setData(Array.isArray(json) ? json : []);
     } catch (error) {
       console.error("Error fetching courses:", error);
@@ -28,11 +25,9 @@ function CoursesList() {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     getCourses();
   }, []);
-
   return (
     <>
       <h1>Courses</h1>
