@@ -12,7 +12,9 @@ function CoursesList() {
 
   const getCourses = async() => {
     try {
-      const res = await fetch("/courses");
+      const res = await fetch("/courses", {
+        method: "POST"
+      });
       console.log(res);
       const json = await res.json();
       setData(json);
