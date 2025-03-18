@@ -131,12 +131,22 @@ app.get("/registered-courses", verifyToken, async (req, res) => {
     res.status(500).json({ error: "Failed to fetch registered courses" });
   }
 });
-app.post('/profile', verifyToken, async (req, res) => {
+app.post("/profile", verifyToken, async (req, res) => {
+  const username = req.user.username;
   try {
-    const result = await db.query('SELECT * FROM users WHERE username = $5', [req.user.username]);
-    res.json(result.rows[0]);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching profile', error: error.message });
+    const result = await db.query("SELECT username, first_name, last_name, email FROM users WHERE username = $1", [username]);
+    if (result.rows.length > 0) {
+      const user = result.rows[0];
+      res.json({
+        message: `Welcome, ${user.username}`,
+        userData: user
+      });
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (err) {
+    console.error("Error fetching user profile:", err);
+    res.status(500).json({ error: "Failed to fetch profile data" });
   }
 });
 app.get('*', (req, res) => { 
