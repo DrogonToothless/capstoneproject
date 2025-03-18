@@ -79,20 +79,31 @@ app.post("/", async (req, res) => {
 app.post("/adminlogin", async (req, res) => {
   try {
     const { username, password } = req.body;
-    const adminExists = await db.query("SELECT * FROM admins WHERE admin_username = $1", [username]);
-    if (adminExists.rows.length > 0) {
-      return res.status(400).json({ message: "Admin user already exists" });
+    const userResult = await db.query("SELECT * FROM admins WHERE username = $1", [username]);
+    if (userResult.rows.length === 0) {
+      return res.status(400).json({ message: "Invalid credentials" });
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    await db.query(
-      "INSERT INTO admin_users (username, password_hash,) VALUES ($1, $2,)",
-      [username, hashedPassword]
-    );
-    res.status(201).json({ message: "Admin created successfully" });
+    const user = userResult.rows[0];
+    const passwordMatch = await bcrypt.compare(password, user.password_hash);
+    if (!passwordMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+    const token = jwt.sign({
+      username: user.username, 
+      password: user.password_hash,
+    }, 
+    process.env.JWT_SECRET, { expiresIn: "1h" });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV,
+      maxAge: 3600000,
+      sameSite: 'Strict',
+    });
   } catch (error) {
-    console.error("Admin creation error:", error);
+    console.error("Login error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
+  res.redirect('/admin');
 });
 app.post("/admin", verifyToken, async (req, res) => {
   res.json({ message: "Admin login successful" });

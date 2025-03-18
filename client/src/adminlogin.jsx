@@ -3,17 +3,16 @@ import "./App.css";
 import "./Misc.css";
 import loading_icon from './assets/load.png';
 
-function App() {
+function AdminLogin() {
   useEffect(() => {
     fetch("/api")
       .then((res) => res.json())
       .then((data) => setData(data.message));
   }, []);
-
   return (
     <>
-      <h1>Log In</h1>
-      <form method="POST" action="/">
+      <h1>Admin Log In</h1>
+      <form method="POST" action="/adminlogin">
         <div>
           <label for="username">Enter Username</label>
           <hr></hr>
@@ -26,11 +25,7 @@ function App() {
         </div>
         <button type = "login" value = "Submit">Log In</button>
       </form>
-      <a href="/register" className="register_swap">Or register here...</a>
-      {/*<img src={loading_icon} className="loading_throbber"></img> */}
-      {/* Yes, that's the actual term for the loading icon. Look it up */}
     </>
   );
 }
-
-export default App;
+export default AdminLogin;
