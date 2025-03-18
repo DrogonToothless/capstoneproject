@@ -149,6 +149,20 @@ app.post("/profile", verifyToken, async (req, res) => {
     res.status(500).json({ error: "Failed to fetch profile data" });
   }
 });
+app.put("/update-profile", verifyToken, async (req, res) => {
+  const { first_name, last_name, email } = req.body;
+  const username = req.user.username;
+  try {
+    await db.query(
+      "UPDATE users SET first_name = $1, last_name = $2, email = $3 WHERE username = $4",
+      [first_name, last_name, email, username]
+    );
+    res.json({ success: true, message: "Profile updated successfully." });
+  } catch (err) {
+    console.error("Error updating profile:", err);
+    res.status(500).json({ error: "Failed to update profile." });
+  }
+});
 app.get('*', (req, res) => { 
   res.sendFile(path.join(__dirname, '../client/dist', 'index.html')); 
 });
