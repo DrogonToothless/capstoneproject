@@ -114,6 +114,28 @@ app.get("/admin/users", async (req, res) => {
     res.json({ users: result.rows });
   }
 });
+app.post("/admin/createuser", async (req, res) => {
+  const { username, email, first_name, last_name, password } = req.body;
+  if (!username || !email || !first_name || !last_name || !password) {
+    console.log("Missing fields!");
+    return res.status(400).json({ error: "All fields are required" });
+  }
+  try {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const result = await db.query(
+      "INSERT INTO users (username, email, first_name, last_name, password_hash) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [username, email, first_name, last_name, hashedPassword]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error("Failed to create user:", err);
+    if (err.code === "23505") {
+      return res.status(400).json({ error: "Username or email already exists" });
+    }
+    res.status(500).json({ error: "Failed to create user" });
+  }
+});
 app.delete("/admin/users/:username", async (req, res) => {
   const { username } = req.params;
   try {
@@ -141,6 +163,22 @@ app.post('/courses', verifyToken, async (req, res) => {
     res.json(result.rows);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching courses', error: error.message });
+  }
+});
+app.delete("/admin/courses/:stringId", async (req, res) => {
+  const { stringId } = req.params;
+
+  try {
+    const result = await db.query("DELETE FROM courses WHERE string_id = $1 RETURNING *", [stringId]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Course not found" });
+    }
+
+    res.status(200).json({ message: "Course deleted successfully" });
+  } catch (error) {
+    console.error("Failed to delete course:", error);
+    res.status(500).json({ error: "Failed to delete course" });
   }
 });
 app.post("/courseregister/:courseId", verifyToken, async (req, res) => {
