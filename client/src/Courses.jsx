@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import "./Courses.css";
 import "./Misc.css";
+import Navbar from "./Navbar";
 import loading_icon from './assets/load.png';
 
 function CoursesList() {
@@ -59,6 +60,7 @@ function CoursesList() {
 
   return (
     <>
+      <Navbar/>
       <h1>Courses</h1>
       <input 
         type="text" 
@@ -67,7 +69,7 @@ function CoursesList() {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
       {isLoading ? (
-        <img src={loading_icon} alt="Loading..." />
+        <img src={loading_icon} className="loading_throbber" alt="Loading..." />
       ) : error ? (
         <p>Error: {error}</p>
       ) : (
