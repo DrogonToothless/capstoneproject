@@ -2,16 +2,13 @@ import { useState, useEffect } from "react";
 import "./Admin.css";
 import "./App.css";
 import "./Misc.css";
-
 function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const [courses, setCourses] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [newUser, setNewUser] = useState({ username: "", email: "", first_name: "", last_name: "" });
-
+  const [newUser, setNewUser] = useState({ username: "", email: "", first_name: "", last_name: "", password: "" });
   useEffect(() => {
-    // Fetch users data
     fetch("/admin/users")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load user data");
@@ -21,8 +18,6 @@ function AdminDashboard() {
         setUsers(Array.isArray(data) ? data : data.users || []);
       })
       .catch((err) => setError(err.message));
-
-    // Fetch courses data
     fetch("/admin/courses")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load course data");
@@ -34,27 +29,24 @@ function AdminDashboard() {
       .catch((err) => setError(err.message))
       .finally(() => setIsLoading(false));
   }, []);
-
   const handleAddUser = () => {
-    fetch("/admin/users", {
+    fetch("/admin/createuser", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newUser),
-    })
+    })    
       .then((res) => res.json())
       .then((data) => setUsers([...users, data]))
       .catch((err) => setError("Failed to add user"));
+      console.log(newUser);
   };
-
   const handleDeleteUser = (username) => {
     fetch(`/admin/users/${username}`, { method: "DELETE" })
       .then(() => setUsers(users.filter((user) => user.username !== username)))
       .catch((err) => setError("Failed to delete user"));
   };
-
   if (isLoading) return <div className="loading">Loading data...</div>;
   if (error) return <div className="error">{error}</div>;
-
   return (
     <div className="admin-container">
       <div className="admin-section">
@@ -94,9 +86,9 @@ function AdminDashboard() {
         <input placeholder="Email" onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} />
         <input placeholder="First Name" onChange={(e) => setNewUser({ ...newUser, first_name: e.target.value })} />
         <input placeholder="Last Name" onChange={(e) => setNewUser({ ...newUser, last_name: e.target.value })} />
+        <input placeholder="Password" onChange={(e) => setNewUser({ ...newUser, password: e.target.value })} />
         <button onClick={handleAddUser}>Add User</button>
       </div>
-
       <div className="admin-section">
         <h2>Courses</h2>
         <table>
@@ -135,5 +127,4 @@ function AdminDashboard() {
     </div>
   );
 }
-
 export default AdminDashboard;
