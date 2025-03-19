@@ -6,12 +6,6 @@ import "./Misc.css";
 import loading_icon from './assets/load.png';
 
 function AdminPanel() {
-  useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
-
   return (
     <>
         <h1>
