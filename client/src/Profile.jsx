@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./Profile.css";
 import "./Misc.css";
+import Navbar from "./Navbar";
 
 // images, it's okay to import images like this manually because this is a small project
 import loading_icon from './assets/load.png';
@@ -103,6 +104,7 @@ function UserProfilePage() {
 
   return (
     <>
+      <Navbar/>
       <div className="profile_welcome">
         <img src={template_pfp} className="profile_pic" alt="Profile" />
         <h1>{profileData ? `Welcome, ${profileData.first_name || profileData.username}` : "Loading..."}</h1>
