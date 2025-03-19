@@ -6,6 +6,7 @@ function AdminDashboard() {
   const [courses, setCourses] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [newUser, setNewUser] = useState({ username: "", email: "", first_name: "", last_name: "" });
 
   useEffect(() => {
     // Fetch users data
@@ -32,6 +33,23 @@ function AdminDashboard() {
       .finally(() => setIsLoading(false));
   }, []);
 
+  const handleAddUser = () => {
+    fetch("/admin/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newUser),
+    })
+      .then((res) => res.json())
+      .then((data) => setUsers([...users, data]))
+      .catch((err) => setError("Failed to add user"));
+  };
+
+  const handleDeleteUser = (username) => {
+    fetch(`/admin/users/${username}`, { method: "DELETE" })
+      .then(() => setUsers(users.filter((user) => user.username !== username)))
+      .catch((err) => setError("Failed to delete user"));
+  };
+
   if (isLoading) return <div className="loading">Loading data...</div>;
   if (error) return <div className="error">{error}</div>;
 
@@ -47,6 +65,7 @@ function AdminDashboard() {
               <th>First Name</th>
               <th>Last Name</th>
               <th>Registered Courses</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -58,13 +77,22 @@ function AdminDashboard() {
                   <td>{user.first_name}</td>
                   <td>{user.last_name}</td>
                   <td>{user.registered_courses}</td>
+                  <td>
+                    <button onClick={() => handleDeleteUser(user.username)}>Delete</button>
+                  </td>
                 </tr>
               ))
             ) : (
-              <tr><td colSpan="4">No user data available</td></tr>
+              <tr><td colSpan="6">No user data available</td></tr>
             )}
           </tbody>
         </table>
+        <h3>Add New User</h3>
+        <input placeholder="Username" onChange={(e) => setNewUser({ ...newUser, username: e.target.value })} />
+        <input placeholder="Email" onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} />
+        <input placeholder="First Name" onChange={(e) => setNewUser({ ...newUser, first_name: e.target.value })} />
+        <input placeholder="Last Name" onChange={(e) => setNewUser({ ...newUser, last_name: e.target.value })} />
+        <button onClick={handleAddUser}>Add User</button>
       </div>
 
       <div className="admin-section">

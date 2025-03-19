@@ -114,6 +114,17 @@ app.get("/admin/users", async (req, res) => {
     res.json({ users: result.rows });
   }
 });
+app.delete("/admin/users/:username", async (req, res) => {
+  const { username } = req.params;
+  try {
+    const result = await db.query("DELETE FROM users WHERE username = $1", [username]);
+    if (result.rowCount === 0) return res.status(404).json({ error: "User not found" });
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting user:", err);
+    res.status(500).json({ error: "Failed to delete user" });
+  }
+});
 app.get("/admin/courses", async (req, res) => {
   try {
     const courses = await db.query("SELECT * FROM courses");
