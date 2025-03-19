@@ -106,7 +106,7 @@ app.post("/adminlogin", async (req, res) => {
 });
 app.get("/admin/users", async (req, res) => {
   try {
-    const users = await db.query("SELECT username, email, first_name, last_name FROM users");
+    const users = await db.query("SELECT username, email, first_name, last_name, registered_courses FROM users");
     res.json(users.rows);
   } catch (err) {
     console.error("Error fetching users:", err);

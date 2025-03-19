@@ -46,6 +46,7 @@ function AdminDashboard() {
               <th>Email</th>
               <th>First Name</th>
               <th>Last Name</th>
+              <th>Registered Courses</th>
             </tr>
           </thead>
           <tbody>
@@ -56,6 +57,7 @@ function AdminDashboard() {
                   <td>{user.email}</td>
                   <td>{user.first_name}</td>
                   <td>{user.last_name}</td>
+                  <td>{user.registered_courses}</td>
                 </tr>
               ))
             ) : (
