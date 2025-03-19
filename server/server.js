@@ -115,7 +115,6 @@ app.get("/admin/users", async (req, res) => {
   }
 });
 app.post("/admin/createuser", async (req, res) => {
-  console.log("Received data:", req.body);
   const { username, email, first_name, last_name, password } = req.body;
   if (!username || !email || !first_name || !last_name || !password) {
     console.log("Missing fields!");
@@ -164,6 +163,22 @@ app.post('/courses', verifyToken, async (req, res) => {
     res.json(result.rows);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching courses', error: error.message });
+  }
+});
+app.delete("/admin/courses/:stringId", async (req, res) => {
+  const { stringId } = req.params;
+
+  try {
+    const result = await db.query("DELETE FROM courses WHERE string_id = $1 RETURNING *", [stringId]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Course not found" });
+    }
+
+    res.status(200).json({ message: "Course deleted successfully" });
+  } catch (error) {
+    console.error("Failed to delete course:", error);
+    res.status(500).json({ error: "Failed to delete course" });
   }
 });
 app.post("/courseregister/:courseId", verifyToken, async (req, res) => {
