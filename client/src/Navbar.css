@@ -1,0 +1,22 @@
+.navbar {
+    /* navbar should be floating on the top of the website */
+    position:sticky;
+    display:flexbox;
+    align-items:center;
+    justify-content:center;
+    background-color: darkgray;
+    width:100%;
+}
+
+.navbar .nav_right {
+    display:flex;
+    align-items:center;
+    justify-content: center;
+    margin-top:0px;
+}
+
+.navbar .nav_right a {
+    padding-left: 10px;
+    padding-right: 10px;
+    color:white;
+}

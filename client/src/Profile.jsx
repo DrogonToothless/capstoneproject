@@ -56,7 +56,7 @@ function UserProfilePage() {
 
   // If loading, display the loading spinner
   if (isLoading) {
-    return <img src={loading_icon} alt="Loading..." />;
+    return <img src={loading_icon} className="loading_throbber" alt="Loading..." />;
   }
 
   // If there's an error, display an error message
