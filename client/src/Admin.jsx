@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import "./Admin.css";
+import "./App.css";
+import "./Misc.css";
 
 function AdminDashboard() {
   const [users, setUsers] = useState([]);
