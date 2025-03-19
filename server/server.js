@@ -3,8 +3,7 @@ const path = require("path");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const cookieParser = require("cookie-parser");
-const app = express();
+const app = express();const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 const PORT = process.env.PORT || 3001;
 const { Client } = require("pg");
@@ -105,8 +104,36 @@ app.post("/adminlogin", async (req, res) => {
   }
   res.redirect('/admin');
 });
-app.post("/admin", verifyToken, async (req, res) => {
-  res.json({ message: "Admin login successful" });
+app.get("/admin/users", async (req, res) => {
+  try {
+    const users = await db.query("SELECT username, email, first_name, last_name, registered_courses FROM users");
+    res.json(users.rows);
+  } catch (err) {
+    console.error("Error fetching users:", err);
+    res.status(500).json({ error: "Failed to fetch users" });
+    res.json({ users: result.rows });
+  }
+});
+app.delete("/admin/users/:username", async (req, res) => {
+  const { username } = req.params;
+  try {
+    const result = await db.query("DELETE FROM users WHERE username = $1", [username]);
+    if (result.rowCount === 0) return res.status(404).json({ error: "User not found" });
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting user:", err);
+    res.status(500).json({ error: "Failed to delete user" });
+  }
+});
+app.get("/admin/courses", async (req, res) => {
+  try {
+    const courses = await db.query("SELECT * FROM courses");
+    res.json(courses.rows);
+  } catch (err) {
+    console.error("Error fetching courses:", err);
+    res.status(500).json({ error: "Failed to fetch courses" });
+    res.json({ courses: courses.rows });
+  }
 });
 app.post('/courses', verifyToken, async (req, res) => {
   try {
